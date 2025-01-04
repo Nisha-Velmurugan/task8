@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_SERVER = 'sonarpy'  
+        PYTHON_HOME = '/usr/bin/python3'  
     }
 
     stages {
