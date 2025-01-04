@@ -3,6 +3,9 @@ pipeline {
 
     environment {
         PYTHON_HOME = '/usr/bin/python3'  
+        SONARQUBE_HOST = 'http://localhost:9000'  
+        SONARQUBE_TOKEN = 'sqp_41f3361f9e0069074a002dc1fe266fe857e0f29c' 
+        SONAR_PROJECT_KEY = 'task8'  
     }
 
     stages {
@@ -33,9 +36,14 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('SonarQube') {
-                        sh 'source venv/bin/activate && sonar-scanner'
-                    }
+                    sh """
+                    source venv/bin/activate
+                    sonar-scanner \
+                        -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=${env.SONARQUBE_HOST} \
+                        -Dsonar.token=${env.SONARQUBE_TOKEN}
+                    """
                 }
             }
         }
